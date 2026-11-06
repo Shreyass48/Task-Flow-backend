@@ -1,0 +1,30 @@
+{
+  "name": "task-flow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shreyass48/Task-Flow-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Shreyass48/Task-Flow-backend/issues"
+  },
+  "homepage": "https://github.com/Shreyass48/Task-Flow-backend#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.12.0",
+    "multer": "^2.5.0",
+    "nodemon": "^3.1.14"
+  }
+}
