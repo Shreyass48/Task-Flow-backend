@@ -1,4 +1,9 @@
-const { registerUser, loginUser } = require("../services/auth-service");
+const userModel = require("../models/user-model");
+const {
+  registerUser,
+  loginUser,
+  myProfile,
+} = require("../services/auth-service");
 
 module.exports.register = async (req, res) => {
   try {
@@ -41,6 +46,17 @@ module.exports.logout = async (req, res) => {
   try {
     res.cookie("token", "");
     res.json({ msg: "Logout Successful" });
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
+module.exports.myprofile = async (req, res) => {
+  try {
+    let user = await myProfile(req.user.email);
+    if (!user) res.send({ msg: "Not logged in" });
+
+    res.json({ user });
   } catch (error) {
     res.send(error.message);
   }

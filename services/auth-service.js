@@ -52,3 +52,15 @@ module.exports.loginUser = async ({ email, password }) => {
     email: user.email,
   };
 };
+
+module.exports.myProfile = async (email) => {
+  let user = await userModel.findOne({ email: email }).select("-password");
+
+  if (!user) {
+    const error = new Error("Please login");
+    error.statusCode = 401;
+    throw error;
+  }
+
+  return user;
+};
