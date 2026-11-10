@@ -8,6 +8,7 @@ const authRouter = require("./routes/authRoute");
 const projectRoute = require("./routes/projectRoute");
 const taskRoute = require("./routes/taskRoute");
 const db = require("./config/mongo-connection");
+const { errorMiddleware } = require("./middleware/errorHandler");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -17,5 +18,7 @@ app.use("/", indexRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/projects", projectRoute);
 app.use("/api/tasks", taskRoute);
+
+app.use(errorMiddleware);
 
 app.listen(3000);
