@@ -1,3 +1,4 @@
+const commentModel = require("../models/comment-model");
 const projectModel = require("../models/project-model");
 const taskModel = require("../models/task-model");
 
@@ -34,7 +35,6 @@ module.exports.createTaskService = async (req) => {
     dueDate,
     createdBy: req.user._id,
   });
-
   // Check whether assigned user belongs to project
 
   if (!createdTask) {
@@ -52,7 +52,6 @@ module.exports.editTaskService = async (req) => {
     req.body;
 
   const task = await taskModel.findById(id);
-
   if (!task) {
     const error = new Error("Task not found");
     error.statusCode = 404;
@@ -74,7 +73,11 @@ module.exports.editTaskService = async (req) => {
 module.exports.getTaskService = async (req) => {
   const id = req.params.id;
 
-  const task = await taskModel.findById(id);
+  const task = await taskModel
+    .findById(id)
+    .populate("project", "name")
+    .populate("assignedTo", "name")
+    .populate("createdBy", "name");
 
   if (!task) {
     const error = new Error("Task not found");
@@ -86,7 +89,11 @@ module.exports.getTaskService = async (req) => {
 };
 
 module.exports.getAllTasksService = async (req) => {
-  const tasks = await taskModel.find();
+  const tasks = await taskModel
+    .find()
+    .populate("project", "name")
+    .populate("assignedTo", "name")
+    .populate("createdBy", "name");
 
   if (!tasks) {
     const error = new Error("Tasks not found");
@@ -95,4 +102,38 @@ module.exports.getAllTasksService = async (req) => {
   }
 
   return tasks;
+};
+
+module.exports.addCommentService = async (req) => {
+  const id = req.params.id;
+  const { content } = req.body;
+  console.log(req.user);
+  const comment = await commentModel.create({
+    content,
+    task: id,
+    user: req.user._id,
+  });
+
+  if (!comment) {
+    const error = new Error("Comment not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return comment;
+};
+
+module.exports.getCommentService = async (req) => {
+  const comment = await commentModel
+    .find()
+    .populate("task", "title")
+    .populate("user", "name");
+
+  if (!comment) {
+    const error = new Error("comment not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return comment;
 };

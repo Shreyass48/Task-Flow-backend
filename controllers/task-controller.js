@@ -3,6 +3,8 @@ const {
   getAllTasksService,
   getTaskService,
   editTaskService,
+  addCommentService,
+  getCommentService,
 } = require("../services/task-service");
 
 module.exports.createTask = async (req, res) => {
@@ -38,6 +40,24 @@ module.exports.editTask = async (req, res) => {
     let editedTask = await editTaskService(req);
 
     res.status(201).json({ msg: "Task Edited", taskDetails: editedTask });
+  } catch (e) {
+    res.send(e.message);
+  }
+};
+
+module.exports.getComment = async (req, res) => {
+  try {
+    let comment = await getCommentService(req);
+    res.json({ comment });
+  } catch (e) {
+    res.send(e.message);
+  }
+};
+
+module.exports.addComment = async (req, res) => {
+  try {
+    let comment = await addCommentService(req);
+    res.json({ comment });
   } catch (e) {
     res.send(e.message);
   }
