@@ -18,7 +18,7 @@ module.exports.createProjectService = async (req) => {
 };
 module.exports.editProjectService = async (req) => {
   const { id } = req.params;
-  const { name, description, status } = req.body;
+  const { name, description, status, members } = req.body;
 
   const project = await projectModel.findById(id);
 
@@ -38,6 +38,7 @@ module.exports.editProjectService = async (req) => {
   if (name !== undefined) project.name = name;
   if (description !== undefined) project.description = description;
   if (status !== undefined) project.status = status;
+  if (members.length !== 0) project.members = members;
 
   await project.save();
 
