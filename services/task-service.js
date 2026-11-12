@@ -88,12 +88,14 @@ module.exports.getTaskService = async (req) => {
   return task;
 };
 
-module.exports.getAllTasksService = async (req) => {
+module.exports.getAllTasksService = async (req, limit = 10, skip = 0) => {
   const tasks = await taskModel
     .find()
-    .populate("project", "name")
+    .populate("project", "name description")
     .populate("assignedTo", "name")
-    .populate("createdBy", "name");
+    .populate("createdBy", "name")
+    .skip(skip)
+    .limit(limit);
 
   if (!tasks) {
     const error = new Error("Tasks not found");
